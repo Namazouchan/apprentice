@@ -5,7 +5,7 @@ class Card
       @rank = rank
       @suit = suit
     end
-  
+
     def to_s
       "#{@suit}の#{@rank}"
     end
