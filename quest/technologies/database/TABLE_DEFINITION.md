@@ -101,5 +101,53 @@ EC サイトの ER 図を、テーブル定義しましょう。各テーブル�
 
 なお、アウトプットはテキストでしていただいてもよいですし、SpreadSheet 等を用いて表形式でしていただいても大丈夫です。
 ```
+[ユーザーテーブル]
+- ユーザーID
+- 名前
+プライマリーキー：ユーザーID
+テーブル：user
 
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|id|bigint(20)||PRIMARY||YES|
+|name|varchar(100)|||||
+|email|varchar(100)||INDEX|||
+
+[購入履歴テーブル]
+- 購入日
+- 購入ID
+プライマリーキー：購入ID
+テーブル：buy
+
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|id|bigint(20)||PRIMARY||YES|
+|name|varchar(100)|||||
+|email|varchar(100)||INDEX|||
+
+[商品テーブル]
+- 商品ID
+- 商品名
+プライマリーキー：商品ID
+テーブル：shouhin
+
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|id|bigint(20)||PRIMARY||YES|
+|name|varchar(100)|||||
+|email|varchar(100)||INDEX|||
+
+[商品カテゴリーテーブル]
+- 商品カテゴリーID
+- 商品カテゴリー
+- 価格
+- 個数
+プライマリーキー：商品カテゴリーID
+テーブル：shohin_category
+
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|id|bigint(20)||PRIMARY||YES|
+|name|varchar(100)|||||
+|email|varchar(100)||INDEX|||
 ```
