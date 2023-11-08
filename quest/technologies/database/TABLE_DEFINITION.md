@@ -146,7 +146,7 @@ EC サイトの ER 図を、テーブル定義しましょう。各テーブル�
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
 |商品カテゴリーID|bigint(20)||PRIMARY||YES|
-|商品カテゴリー|varchar(100)|||||
-|価格|varchar(100)||INDEX|||
-|name|varchar(100)|||||
-|name|varchar(100)|||||
+|商品カテゴリー|varchar(100)||INDEX|||
+|価格|varchar(100)|||||
+|個数|varchar(100)|||||
+
