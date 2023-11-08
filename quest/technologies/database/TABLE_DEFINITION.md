@@ -101,7 +101,7 @@ EC サイトの ER 図を、テーブル定義しましょう。各テーブル�
 
 なお、アウトプットはテキストでしていただいてもよいですし、SpreadSheet 等を用いて表形式でしていただいても大丈夫です。
 
-**[ユーザーテーブル]
+[ユーザーテーブル]
 - ユーザーID
 - 名前
 - プライマリーキー：ユーザーID  
@@ -109,9 +109,8 @@ EC サイトの ER 図を、テーブル定義しましょう。各テーブル�
 
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|id|bigint(20)||PRIMARY||YES|
+|ユーザーID|bigint(20)||PRIMARY||YES|
 |name|varchar(100)|||||
-|email|varchar(100)||INDEX|||
 
 **[購入履歴テーブル]
 - 購入日
@@ -121,9 +120,8 @@ EC サイトの ER 図を、テーブル定義しましょう。各テーブル�
 
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|id|bigint(20)||PRIMARY||YES|
-|name|varchar(100)|||||
-|email|varchar(100)||INDEX|||
+|購入ID|bigint(20)||PRIMARY||YES|
+|購入日|date|||||
 
 **[商品テーブル]
 - 商品ID
@@ -133,9 +131,9 @@ EC サイトの ER 図を、テーブル定義しましょう。各テーブル�
 
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|id|bigint(20)||PRIMARY||YES|
-|name|varchar(100)|||||
-|email|varchar(100)||INDEX|||
+|商品ID|bigint(20)||PRIMARY||YES|
+|商品名|varchar(100)|||||
+
 
 **[商品カテゴリーテーブル]
 - 商品カテゴリーID
@@ -147,7 +145,8 @@ EC サイトの ER 図を、テーブル定義しましょう。各テーブル�
 
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|id|bigint(20)||PRIMARY||YES|
+|商品カテゴリーID|bigint(20)||PRIMARY||YES|
+|商品カテゴリー|varchar(100)|||||
+|価格|varchar(100)||INDEX|||
 |name|varchar(100)|||||
-|email|varchar(100)||INDEX|||
-
+|name|varchar(100)|||||
