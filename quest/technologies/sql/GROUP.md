@@ -3,6 +3,14 @@
 ## 1. グルーピング
 
 給与情報(salaries テーブル)から、従業員ごとに salary が何レコード登録されているかを取得し、従業員番号と登録レコード数を10件表示してください。
+```SQL:SELECT文
+SELECT
+    emp_no, COUNT(*)
+FROM
+    salaries
+GROUP BY
+    emp_no LIMIT 0,10;
+```
 
 ## 2. グルーピングと集計関数
 
