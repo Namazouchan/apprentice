@@ -54,21 +54,69 @@
 
 以下、提出課題
 
-テーブル：users
+テーブル：Users
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|id|integer(20)||PRIMARY||YES|
-|name|varchar(100)|||||
-|email|varchar(100)||INDEX|||
+|user_id|integer(20)||PRIMARY||YES|
+|user_name|varchar(100)|||||
 
-- ユニークキー制約：id,name,email カラムに対して設定
+- PK制約：user_id カラムに対して設定
 
-テーブル：
+テーブル：Channel
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|id|integer(20)||PRIMARY||YES|
-|name|varchar(100)|||||
-|email|varchar(100)||INDEX|||
+|channel_id|integer(20)||PRIMARY||YES|
+|channel_name|varchar(100)|||||
+|channel_views|varchar(1000000)|||||
+
+
+- PK制約：channel_id カラムに対して設定
+
+テーブル：Genre ジャンル
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|genre_id|integer(20)||PRIMARY||YES|
+|genre_name|varchar(100)|||||
+
+- PK制約：genre_id カラムに対して設定
+
+テーブル：Program 番組
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|program_id|integer(20)||PRIMARY||YES|
+|program_name|varchar(100)|||||
+|title_name|varchar(100)|||||
+|description|varchar(1000)|||||
+|genre_id|integer(20)||FOREIGN|||
+
+- PK制約：program_id カラムに対して設定
+- FK制約：ganre_id カラムに対して設定
+
+テーブル：Series 
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|series_id|integer(20)||PRIMARY||YES|
+|series_name|varchar(100)|||||
+|program_id|integer(20)||FOREIGN|||
+
+- PK制約：series_id カラムに対して設定
+- FK制約：program_id カラムに対して設定
+
+テーブル：Episode
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|episode_id|integer(20)||PRIMARY||YES|
+|number_season|varchar(100)|⚪︎||||
+|episode_count|integer(100)|⚪︎||||
+|title|varchar(100)|||||
+|description|varchar(1000)|||||
+|episode_detail|varchar(1000)||||
+|video_time|||||
+|start_time|varchar(1000)||||
+|end_time|varchar(1000)||||
+|end_time|varchar(1000)||||
+|program_id|varchar(1000)||||
+
 ## ステップ2
 
 実際にテーブルを構築し、データを入れましょう。その手順をドキュメントとしてまとめてください（アウトプットは手順のドキュメントです）。
