@@ -57,65 +57,67 @@
 テーブル：Users
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|user_id|integer(20)||PRIMARY||YES|
-|user_name|varchar(100)|||||
+|id|int||PRIMARY||YES|
+|user_name|varchar(64)|||||
 
 - PK制約：user_id カラムに対して設定
 
-テーブル：Channel
+テーブル：Channels
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|channel_id|integer(20)||PRIMARY||YES|
-|channel_name|varchar(100)|||||
-|channel_views|varchar(1000000)|||||
+|id|int||PRIMARY||YES|
+|channel_name|varchar(64)|||||
+|channel_views|integer|||||
 
 
-- PK制約：channel_id カラムに対して設定
+- PK制約：id カラムに対して設定
 
-テーブル：Genre ジャンル
+テーブル：Genres ジャンル
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|genre_id|integer(20)||PRIMARY||YES|
-|genre_name|varchar(100)|||||
+|id|int||PRIMARY||YES|
+|genre_name|varchar(64)|||||
 
-- PK制約：genre_id カラムに対して設定
+- PK制約：id カラムに対して設定
 
-テーブル：Program 番組
+テーブル：Programs 番組
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|program_id|integer(20)||PRIMARY||YES|
-|program_name|varchar(100)|||||
-|title_name|varchar(100)|||||
-|description|varchar(1000)|||||
+|id|int||PRIMARY||YES|
+|program_name|varchar(64)|||||
+|title_name|varchar(64)|||||
+|description|varchar(255)|||||
 |genre_id|integer(20)||FOREIGN|||
 
-- PK制約：program_id カラムに対して設定
+- PK制約：id カラムに対して設定
 - FK制約：ganre_id カラムに対して設定
 
-テーブル：Series 
+テーブル：Series
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|series_id|integer(20)||PRIMARY||YES|
-|series_name|varchar(100)|||||
-|program_id|integer(20)||FOREIGN|||
+|id|int||PRIMARY||YES|
+|series_name|varchar(64)|||||
+|program_id|int||FOREIGN|||
 
-- PK制約：series_id カラムに対して設定
+- PK制約：id カラムに対して設定
 - FK制約：program_id カラムに対して設定
 
-テーブル：Episode
+テーブル：Episodes
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|episode_id|integer(20)||PRIMARY||YES|
-|number_season|varchar(100)|⚪︎||||
+|id|int||PRIMARY||YES|
+|number_season|varchar(255)|⚪︎||||
 |episode_count|integer(100)|⚪︎||||
-|title|varchar(100)|||||
-|description|varchar(1000)|||||
-|episode_detail|varchar(1000)||||
-|video_time|||||
-|start_time|varchar(1000)||||
-|end_time|varchar(1000)||||
-|end_time|varchar(1000)||||
-|program_id|varchar(1000)||||
+|title|varchar(255)|||||
+|description|varchar(512)|||||
+|episode_detail|varchar(512)||||
+|video_time|time||||
+|start_time|datetime||||
+|end_time|datetime||||
+|program_id|int||FOREIGN||
+
+- PK制約：episode_id カラムに対して設定
+- FK制約：program_id カラムに対して設定
 
 ## ステップ2
 
