@@ -112,12 +112,14 @@
 |description|varchar(512)|||||
 |episode_detail|varchar(512)||||
 |video_time|time||||
-|start_time|datetime||||
-|end_time|datetime||||
+|start_at|datetime||||
+|end_at|datetime||||
 |program_id|int||FOREIGN||
 
-- PK制約：episode_id カラムに対して設定
+- PK制約：id カラムに対して設定
 - FK制約：program_id カラムに対して設定
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FQjz6w9RTM4sgjrOadYCvYX%2FEntity-Modeler-(%25E3%2582%25B3%25E3%2583%259F%25E3%2583%25A5%25E3%2583%258B%25E3%2583%2586%25E3%2582%25A3)%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3DtxSzgb96hjYW7dK6-1" allowfullscreen></iframe>
 
 ## ステップ2
 
