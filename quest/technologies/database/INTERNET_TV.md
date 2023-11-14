@@ -60,7 +60,7 @@
 |id|int||PRIMARY||YES|
 |user_name|varchar(64)|||||
 
-- PK制約：user_id カラムに対して設定
+- PK制約：id カラムに対して設定
 
 テーブル：Channels
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
@@ -68,7 +68,7 @@
 |id|int||PRIMARY||YES|
 |channel_name|varchar(64)|||||
 |channel_views|integer|||||
-
+|user_id|int||FOREIGN|||
 
 - PK制約：id カラムに対して設定
 
@@ -78,7 +78,6 @@
 |id|int||PRIMARY||YES|
 |genre_name|varchar(64)|||||
 
-- PK制約：id カラムに対して設定
 
 テーブル：Programs 番組
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
@@ -87,10 +86,6 @@
 |program_name|varchar(64)|||||
 |title_name|varchar(64)|||||
 |description|varchar(255)|||||
-|genre_id|integer(20)||FOREIGN|||
-
-- PK制約：id カラムに対して設定
-- FK制約：ganre_id カラムに対して設定
 
 テーブル：Series
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
@@ -98,9 +93,6 @@
 |id|int||PRIMARY||YES|
 |series_name|varchar(64)|||||
 |program_id|int||FOREIGN|||
-
-- PK制約：id カラムに対して設定
-- FK制約：program_id カラムに対して設定
 
 テーブル：Episodes
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
@@ -116,10 +108,26 @@
 |end_at|datetime||||
 |program_id|int||FOREIGN||
 
-- PK制約：id カラムに対して設定
-- FK制約：program_id カラムに対して設定
+中間テーブル：genre_program
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|ganre_id|int|||FOREIGN||
+|program_id|int|||FOREIGN||
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FQjz6w9RTM4sgjrOadYCvYX%2FEntity-Modeler-(%25E3%2582%25B3%25E3%2583%259F%25E3%2583%25A5%25E3%2583%258B%25E3%2583%2586%25E3%2582%25A3)%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3DtxSzgb96hjYW7dK6-1" allowfullscreen></iframe>
+中間テーブル：channel_program
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|channel_id|int|||FOREIGN||
+|program_id|int|||FOREIGN||
+
+中間テーブル：series_program
+|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|series_id|int|||FOREIGN||
+|program_id|int|||FOREIGN||
+
+- ER図
+https://www.figma.com/file/Qjz6w9RTM4sgjrOadYCvYX/Entity-Modeler-(%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%83%86%E3%82%A3)?type=whiteboard&node-id=0-1&t=txSzgb96hjYW7dK6-0
 
 ## ステップ2
 
