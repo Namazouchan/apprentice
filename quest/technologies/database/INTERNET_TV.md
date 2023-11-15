@@ -60,7 +60,6 @@
 |id|int||PRIMARY||YES|
 |user_name|varchar(64)|||||
 
-- PK制約：id カラムに対して設定
 
 テーブル：Channels
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
@@ -70,14 +69,11 @@
 |channel_views|integer|||||
 |user_id|int||FOREIGN|||
 
-- PK制約：id カラムに対して設定
-
 テーブル：Genres ジャンル
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
 | ---- | ---- | ---- | ---- | ---- | ---- |
 |id|int||PRIMARY||YES|
 |genre_name|varchar(64)|||||
-
 
 テーブル：Programs 番組
 |カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
@@ -136,8 +132,85 @@ https://www.figma.com/file/Qjz6w9RTM4sgjrOadYCvYX/Entity-Modeler-(%E3%82%B3%E3%8
 具体的には、以下のことを行う手順のドキュメントを作成してください。
 
 1. データベースを構築します
+```
+mysql -u ユーザー名;
+CREATE DATABASE internet_tv;
+SHOW DATABASES;
+USE internet_tv;
+```
 2. ステップ1で設計したテーブルを構築します
+```
+CREATE TABLE Users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_name VARCHAR(64)
+);
+
+CREATE TABLE Channels (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    channel_name VARCHAR(64),
+    channel_views INT,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+);
+
+CREATE TABLE Genres (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    genre_name VARCHAR(64)
+);
+
+CREATE TABLE Programs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    program_name VARCHAR(64),
+    title_name VARCHAR(64),
+    description VARCHAR(255)
+);
+
+CREATE TABLE Series (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    series_name VARCHAR(64),
+    program_id INT,
+    FOREIGN KEY (program_id) REFERENCES Programs(id)
+);
+
+CREATE TABLE Episodes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    number_season VARCHAR(255),
+    episode_count INT,
+    title VARCHAR(255),
+    description VARCHAR(512),
+    episode_detail VARCHAR(512),
+    video_time TIME,
+    start_at DATETIME,
+    end_at DATETIME,
+    program_id INT,
+    FOREIGN KEY (program_id) REFERENCES Programs(id)
+);
+
+CREATE TABLE genre_program (
+    genre_id INT,
+    program_id INT,
+    FOREIGN KEY (genre_id) REFERENCES Genres(id),
+    FOREIGN KEY (program_id) REFERENCES Programs(id)
+);
+
+CREATE TABLE channel_program (
+    channel_id INT,
+    program_id INT,
+    FOREIGN KEY (channel_id) REFERENCES Channels(id),
+    FOREIGN KEY (program_id) REFERENCES Programs(id)
+);
+
+CREATE TABLE series_program (
+    series_id INT,
+    program_id INT,
+    FOREIGN KEY (series_id) REFERENCES Series(id),
+    FOREIGN KEY (program_id) REFERENCES Programs(id)
+);
+
+```
 3. サンプルデータを入れます。サンプルデータはご自身で作成ください（ChatGPTを利用すると比較的簡単に生成できます）
+```
+```
 
 手順のドキュメントは、他の人が見た時にその手順通りに実施すればテーブル作成及びサンプルデータ格納が行えるように記載してください。
 
