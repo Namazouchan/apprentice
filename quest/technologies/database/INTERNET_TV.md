@@ -199,8 +199,75 @@ INSERT INTO Schedule (channel_id, program_id, episode_id, start_time, end_time) 
 以下のデータを抽出するクエリを書いてください。
 
 1. よく見られているエピソードを知りたいです。エピソード視聴数トップ3のエピソードタイトルと視聴数を取得してください
+```
+SELECT episode_title, view_count
+FROM Episodes
+ORDER BY view_count DESC
+LIMIT 3;
+```
 2. よく見られているエピソードの番組情報やシーズン情報も合わせて知りたいです。エピソード視聴数トップ3の番組タイトル、シーズン数、エピソード数、エピソードタイトル、視聴数を取得してください
+```
+SELECT
+    P.program_name AS 番組タイトル,
+    E.season_number AS シーズン数,
+    E.episode_number AS エピソード数,
+    E.episode_title AS エピソードタイトル,
+    E.view_count AS 視聴数
+FROM
+    Episodes E
+JOIN
+    Programs P ON E.program_id = P.program_id
+ORDER BY
+    E.view_count DESC
+LIMIT 3;
+
+```
 3. 本日の番組表を表示するために、本日、どのチャンネルの、何時から、何の番組が放送されるのかを知りたいです。本日放送される全ての番組に対して、チャンネル名、放送開始時刻(日付+時間)、放送終了時刻、シーズン数、エピソード数、エピソードタイトル、エピソード詳細を取得してください。なお、番組の開始時刻が本日のものを本日方法される番組とみなすものとします
+```
+SELECT
+    C.channel_name AS チャンネル名,
+    S.start_time AS 放送開始時刻,
+    S.end_time AS 放送終了時刻,
+    E.season_number AS シーズン数,
+    E.episode_number AS エピソード数,
+    E.episode_title AS エピソードタイトル,
+    E.episode_description AS エピソード詳細
+FROM
+    Schedule S
+JOIN
+    Channels C ON S.channel_id = C.channel_id
+JOIN
+    Programs P ON S.program_id = P.program_id
+JOIN
+    Episodes E ON S.episode_id = E.episode_id
+WHERE
+    DATE(S.start_time) = CURDATE()
+ORDER BY
+    S.start_time;
+```
 4. ドラマというチャンネルがあったとして、ドラマのチャンネルの番組表を表示するために、本日から一週間分、何日の何時から何の番組が放送されるのかを知りたいです。ドラマのチャンネルに対して、放送開始時刻、放送終了時刻、シーズン数、エピソード数、エピソードタイトル、エピソード詳細を本日から一週間分取得してください
+```
+SELECT
+    C.channel_name AS チャンネル名,
+    S.start_time AS 放送開始時刻,
+    S.end_time AS 放送終了時刻,
+    E.season_number AS シーズン数,
+    E.episode_number AS エピソード数,
+    E.episode_title AS エピソードタイトル,
+    E.episode_description AS エピソード詳細
+FROM
+    Schedule S
+JOIN
+    Channels C ON S.channel_id = C.channel_id
+JOIN
+    Programs P ON S.program_id = P.program_id
+JOIN
+    Episodes E ON S.episode_id = E.episode_id
+WHERE
+    C.channel_name = 'ドラマ' AND
+    DATE(S.start_time) BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+ORDER BY
+    S.start_time;
+```
 5. (advanced) 直近一週間で最も見られた番組が知りたいです。直近一週間に放送された番組の中で、エピソード視聴数合計トップ2の番組に対して、番組タイトル、視聴数を取得してください
 6. (advanced) ジャンルごとの番組の視聴数ランキングを知りたいです。番組の視聴数ランキングはエピソードの平均視聴数ランキングとします。ジャンルごとに視聴数トップの番組に対して、ジャンル名、番組タイトル、エピソード平均視聴数を取得してください。
