@@ -52,75 +52,6 @@
 
 - 外部キー制約：user_id に対して、users テーブルの id カラムから設定
 
-以下、提出課題
-
-テーブル：Users
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|id|int||PRIMARY||YES|
-|user_name|varchar(64)|||||
-
-
-テーブル：Channels
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|id|int||PRIMARY||YES|
-|channel_name|varchar(64)|||||
-|channel_views|integer|||||
-|user_id|int||FOREIGN|||
-
-テーブル：Genres ジャンル
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|id|int||PRIMARY||YES|
-|genre_name|varchar(64)|||||
-
-テーブル：Programs 番組
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|id|int||PRIMARY||YES|
-|program_name|varchar(64)|||||
-|title_name|varchar(64)|||||
-|description|varchar(255)|||||
-
-テーブル：Series
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|id|int||PRIMARY||YES|
-|series_name|varchar(64)|||||
-|program_id|int||FOREIGN|||
-
-テーブル：Episodes
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|id|int||PRIMARY||YES|
-|number_season|varchar(255)|⚪︎||||
-|episode_count|integer(100)|⚪︎||||
-|title|varchar(255)|||||
-|description|varchar(512)|||||
-|episode_detail|varchar(512)||||
-|video_time|time||||
-|start_at|datetime||||
-|end_at|datetime||||
-|program_id|int||FOREIGN||
-
-中間テーブル：genre_program
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|ganre_id|int|||FOREIGN||
-|program_id|int|||FOREIGN||
-
-中間テーブル：channel_program
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|channel_id|int|||FOREIGN||
-|program_id|int|||FOREIGN||
-
-中間テーブル：series_program
-|カラム名|データ型|NULL|キー|初期値|AUTO INCREMENT|
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|series_id|int|||FOREIGN||
-|program_id|int|||FOREIGN||
 
 - ER図
 https://www.figma.com/file/Qjz6w9RTM4sgjrOadYCvYX/Entity-Modeler-(%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%83%86%E3%82%A3)?type=whiteboard&node-id=0-1&t=txSzgb96hjYW7dK6-0
@@ -140,147 +71,118 @@ USE internet_tv;
 ```
 2. ステップ1で設計したテーブルを構築します
 ```
-CREATE TABLE Users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_name VARCHAR(64)
-);
-
+-- チャンネルテーブルの作成
 CREATE TABLE Channels (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    channel_name VARCHAR(64),
-    channel_views INT,
-    user_id INT,
-    FOREIGN KEY (user_id) REFERENCES Users(id)
+    channel_id INT PRIMARY KEY AUTO_INCREMENT,
+    channel_name VARCHAR(255),
+    channel_description TEXT
 );
 
-CREATE TABLE Genres (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    genre_name VARCHAR(64)
-);
-
+-- 番組テーブルの作成
 CREATE TABLE Programs (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    program_name VARCHAR(64),
-    title_name VARCHAR(64),
-    description VARCHAR(255)
-);
-
-CREATE TABLE Series (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    series_name VARCHAR(64),
-    program_id INT,
-    FOREIGN KEY (program_id) REFERENCES Programs(id)
-);
-
-CREATE TABLE Episodes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    number_season VARCHAR(255),
-    episode_count INT,
-    title VARCHAR(255),
-    description VARCHAR(512),
-    episode_detail VARCHAR(512),
-    video_time TIME,
-    start_at DATETIME,
-    end_at DATETIME,
-    program_id INT,
-    FOREIGN KEY (program_id) REFERENCES Programs(id)
-);
-
-CREATE TABLE genre_program (
+    program_id INT PRIMARY KEY AUTO_INCREMENT,
+    program_name VARCHAR(255),
+    program_description TEXT,
     genre_id INT,
-    program_id INT,
-    FOREIGN KEY (genre_id) REFERENCES Genres(id),
-    FOREIGN KEY (program_id) REFERENCES Programs(id)
+    FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
 );
 
-CREATE TABLE channel_program (
+-- ジャンルテーブルの作成
+CREATE TABLE Genres (
+    genre_id INT PRIMARY KEY AUTO_INCREMENT,
+    genre_name VARCHAR(255)
+);
+
+-- シリーズテーブルの作成
+CREATE TABLE Series (
+    series_id INT PRIMARY KEY AUTO_INCREMENT,
+    series_name VARCHAR(255),
+    program_id INT,
+    FOREIGN KEY (program_id) REFERENCES Programs(program_id)
+);
+
+-- エピソードテーブルの作成
+CREATE TABLE Episodes (
+    episode_id INT PRIMARY KEY AUTO_INCREMENT,
+    season_number INT,
+    episode_number INT,
+    episode_title VARCHAR(255),
+    episode_description TEXT,
+    video_duration TIME,
+    release_date DATE,
+    view_count INT,
+    program_id INT,
+    FOREIGN KEY (program_id) REFERENCES Programs(program_id)
+);
+
+-- スケジュールテーブルの作成
+CREATE TABLE Schedule (
+    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
     channel_id INT,
     program_id INT,
-    FOREIGN KEY (channel_id) REFERENCES Channels(id),
-    FOREIGN KEY (program_id) REFERENCES Programs(id)
+    episode_id INT,
+    start_time DATETIME,
+    end_time DATETIME,
+    FOREIGN KEY (channel_id) REFERENCES Channels(channel_id),
+    FOREIGN KEY (program_id) REFERENCES Programs(program_id),
+    FOREIGN KEY (episode_id) REFERENCES Episodes(episode_id)
 );
 
-CREATE TABLE series_program (
-    series_id INT,
-    program_id INT,
-    FOREIGN KEY (series_id) REFERENCES Series(id),
-    FOREIGN KEY (program_id) REFERENCES Programs(id)
-);
+-- Channels テーブルへのサンプルデータの挿入
+INSERT INTO Channels (channel_name, channel_description) VALUES
+    ('ドラマ1', '人気ドラマチャンネル'),
+    ('ドラマ2', '新作ドラマチャンネル'),
+    ('アニメ1', 'アニメチャンネル1'),
+    ('アニメ2', 'アニメチャンネル2'),
+    ('スポーツ', 'スポーツ中継チャンネル'),
+    ('ペット', 'ペット番組チャンネル');
 
-```
-3. サンプルデータを入れます。サンプルデータはご自身で作成ください（ChatGPTを利用すると比較的簡単に生成できます）
-```
-INSERT INTO channels (name)
-VALUES
-  ('テレビ東京'),
-  ('フジテレビ'),
-  ('TBSテレビ'),
-  ('NHK総合'),
-  ('日本テレビ'),
-  ('テレビ朝日');
+-- Genres テーブルへのサンプルデータの挿入
+INSERT INTO Genres (genre_name) VALUES
+    ('アニメ'),
+    ('映画'),
+    ('ドラマ'),
+    ('ニュース'),
+    ('スポーツ'),
+    ('ペット番組');
 
-INSERT INTO users (id, user_name)
-VALUES
-  (1, '田中太郎'),
-  (2, '山田花子'),
-  (3, '鈴木一郎'),
-  (4, '佐藤みゆき'),
-  (5, '高橋健太'),
-  (6, '小林美香'),
-  (7, '伊藤隆之'),
-  (8, '渡辺さちこ'),
-  (9, '斎藤雅彦'),
-  (10, '吉田明美');
+-- Programs テーブルへのサンプルデータの挿入
+INSERT INTO Programs (program_name, program_description, genre_id) VALUES
+    ('鬼滅の刃', '人気のアニメ「鬼滅の刃」', 1), -- ジャンルID 1 はアニメ
+    ('ハリー・ポッターと賢者の石', '魔法の世界を描いたファンタジー映画', 2), -- ジャンルID 2 は映画
+    ('プリズン・ブレイク', '脱獄をテーマにしたドラマシリーズ', 3), -- ジャンルID 3 はドラマ
+    ('CNNニュース', '最新の国際ニュース', 4), -- ジャンルID 4 はニュース
+    ('NBAライブ', 'NBAバスケットボールの生中継', 5), -- ジャンルID 5 はスポーツ
+    ('ペットの世界', 'かわいいペットたちの日常', 6); -- ジャンルID 6 はペット番組
 
-INSERT INTO genres (genre_name)
-VALUES
-  ('ドラマ'),
-  ('アクション'),
-  ('コメディ'),
-  ('サスペンス'),
-  ('SF'),
-  ('ファンタジー'),
-  ('アニメ'),
-  ('ホラー'),
-  ('ロマンス'),
-  ('歴史'),
-  ('ドキュメンタリー'),
-  ('スポーツ'),
-  ('バラエティ'),
-  ('音楽'),
-  ('ニュース'),
-  ('教育');
+-- Series テーブルへのサンプルデータの挿入
+INSERT INTO Series (series_name, program_id) VALUES
+    ('鬼滅の刃', 1), -- シリーズ名「鬼滅の刃」に関連付けられた番組ID
+    ('ハリー・ポッターシリーズ', 2), -- シリーズ名「ハリー・ポッターシリーズ」に関連付けられた番組ID
+    ('プリズン・ブレイク', 3), -- シリーズ名「プリズン・ブレイク」に関連付けられた番組ID
+    ('CNNニュース', 4), -- シリーズ名「CNNニュース」に関連付けられた番組ID
+    ('NBAライブ', 5), -- シリーズ名「NBAライブ」に関連付けられた番組ID
+    ('ペットの世界', 6); -- シリーズ名「ペットの世界」に関連付けられた番組ID
 
-INSERT INTO programs (program_name, title_name, description)
-VALUES
-  ('ニュース番組', '朝のワイドニュース', '国内外の最新ニュースと天気予報をお届けします。'),
-  ('ドラマ', '愛と友情の物語', '感動的な人間ドラマ。主人公の愛と友情の葛藤を描きます。'),
-  ('バラエティ番組', '笑いの王国', 'トップコメディアンたちが出演し、爆笑必至のバラエティ番組です。'),
-  ('映画', 'アクションヒーローの冒険', 'アクション満載の映画。ヒーローが悪党と戦います。'),
-  ('ドキュメンタリー', '自然の神秘', '美しい自然の風景や野生動物の生態を追跡するドキュメンタリー番組です。'),
-  ('音楽番組', 'ライブコンサート', '人気アーティストのライブコンサートを生中継。音楽ファンにおすすめです。'),
-  ('スポーツ', 'プロ野球中継', '熱いプロ野球の試合をライブ中継。リーグ戦の頂点を目指す選手たちの戦いをお楽しみください。'),
-  ('アニメ', '冒険の仲間たち', '子供たちの大好きなアニメ。仲間たちとの冒険がテーマです。');
+-- Episodes テーブルへのサンプルデータの挿入
+INSERT INTO Episodes (season_number, episode_number, episode_title, episode_description, video_duration, release_date, view_count, program_id) VALUES
+    (1, 1, '鬼の山', '鬼の襲撃から始まる物語', '00:25:00', '2023-01-15', 10000, 1), -- シーズン1、エピソード1
+    (1, 2, '竈門炭治郎、隊士の訓練', '鬼殺隊の訓練生としての日々', '00:22:30', '2023-01-22', 9000, 1), -- シーズン1、エピソード2
+    (1, 1, 'プラットフォーム9¾へようこそ', '魔法の学校への冒険', '00:30:45', '2023-02-10', 12000, 2), -- シーズン1、エピソード1
+    (2, 3, '迷子の術', '脱獄計画が進行中', '00:28:15', '2023-02-15', 8500, 3), -- シーズン2、エピソード3
+    (1, 1, '最新ニュース', '国際情勢のハイライト', '00:15:30', '2023-02-05', 5000, 4), -- シーズン1、エピソード1
+    (1, 1, 'NBAプレーオフ', 'プレーオフの興奮が始まる', '00:35:20', '2023-03-01', 18000, 5), -- シーズン1、エピソード1
+    (1, 1, 'ペットの日常', 'かわいいペットたちの日常', '00:20:00', '2023-02-20', 7500, 6); -- シーズン1、エピソード1
 
-INSERT INTO episodes (number_season, episode_count, title, description, episode_detail, video_time, start_at, end_at)
-VALUES
-  (1, 10, 'HTMLとは', 'HTMLとはの概要です。', 'HTMLとはの詳細情報です。', '1:00:00', '2023-01-10 20:00:00', '2023-01-10 21:00:00'),
-  (2, 12, 'CSSとは', 'CSSとはの概要です。', 'CSSとはの詳細情報です。', '0:45:00', '2023-02-15 19:30:00', '2023-02-15 20:15:00'),
-  (3, 8, 'RUBYとは', 'RUBYとはの概要です。', 'RUBYとはの詳細情報です。', '0:55:00', '2023-03-20 21:15:00', '2023-03-20 22:10:00'),
-  (4, 10, 'SQLとは', 'SQLとはの概要です。', 'SQLとはの詳細情報です。', '0:50:00', '2023-04-25 18:45:00', '2023-04-25 19:35:00');
+-- Schedule テーブルへのサンプルデータの挿入
+INSERT INTO Schedule (channel_id, program_id, episode_id, start_time, end_time) VALUES
+    (1, 1, 1, '2023-01-15 20:00:00', '2023-01-15 21:00:00'), -- チャンネル1、番組1、エピソード1
+    (2, 2, 3, '2023-02-10 19:30:00', '2023-02-10 21:30:00'), -- チャンネル2、番組3、エピソード3
+    (3, 3, 4, '2023-02-15 22:00:00', '2023-02-15 23:00:00'), -- チャンネル3、番組4、エピソード4
+    (4, 4, 2, '2023-02-05 18:00:00', '2023-02-05 18:30:00'), -- チャンネル4、番組2、エピソード2
+    (5, 5, 5, '2023-03-01 21:00:00', '2023-03-01 23:00:00'), -- チャンネル5、番組5、エピソード5
+    (6, 6, 6, '2023-02-20 17:00:00', '2023-02-20 18:00:00'); -- チャンネル6、番組6、エピソード6
 
-INSERT INTO series (series_name)
-VALUES
-  ('人気ドラマシリーズ'),
-  ('冒険ファンタジーシリーズ'),
-  ('コメディバラエティシリーズ'),
-  ('サスペンスドラマシリーズ'),
-  ('SFエピックシリーズ'),
-  ('アニメシリーズ'),
-  ('ホラーシリーズ'),
-  ('ロマンスドラマシリーズ'),
-  ('歴史ドキュメンタリーシリーズ'),
-  ('音楽ライブシリーズ');
 
 ```
 
